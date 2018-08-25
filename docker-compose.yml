@@ -5,7 +5,7 @@ services:
     build:
       context: ./influxdb
       dockerfile: Dockerfile-influxdb
-      image: homate-influxdb:1.0.0
+    image: homate-influxdb:1.0.0
     ports:
       - "8086:8086"
     volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./mosquitto
       dockerfile: Dockerfile-mosquitto
-      image: homate-mosquitto:1.0.0
+    image: homate-mosquitto:1.0.0
     ports:
       - "1883:1883"
     deploy:
@@ -33,12 +33,12 @@ services:
     build:
       context: ./nodered # for package.json file
       dockerfile: Dockerfile-nodered
-      image: homate-nodered:1.0.0
+    image: homate-nodered:1.0.0
     ports:
       - "1880:1880"
-    #depends_on:
-    #  - influxdb
-    #  - mosquitto
+    depends_on:
+      - influxdb
+      - mosquitto
     deploy:
       restart_policy:
         condition: on-failure
@@ -49,7 +49,7 @@ services:
     build:
       context: ./grafana
       dockerfile: Dockerfile-grafana
-      image: homate-grafana:1.0.0
+    image: homate-grafana:1.0.0
     ports:
       - "3000:3000"
     depends_on:
