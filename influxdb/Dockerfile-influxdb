@@ -1,0 +1,13 @@
+FROM resin/rpi-raspbian:jessie
+
+RUN apt update && apt install -y apt-transport-https
+
+RUN curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+
+RUN echo "deb https://repos.influxdata.com/debian jessie stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+RUN apt update && apt install -y influxdb
+
+COPY influxdb.conf /etc/influxdb/influxdb.conf
+
+CMD ["influxd"]
