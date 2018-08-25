@@ -1,0 +1,57 @@
+version: "3"
+services:
+
+  influxdb:
+    build:
+      context: ./influxdb
+      dockerfile: Dockerfile-influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+
+  mosquitto:
+    build:
+      context: ./mosquitto
+      dockerfile: Dockerfile-mosquitto
+    ports:
+      - "1883:1883"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+
+  nodered:
+    build:
+      context: ./nodered # for package.json file
+      dockerfile: Dockerfile-nodered
+    ports:
+      - "1880:1880"
+    #depends_on:
+    #  - influxdb
+    #  - mosquitto
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+
+  grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
