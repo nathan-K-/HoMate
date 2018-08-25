@@ -46,16 +46,11 @@ services:
         max_attempts: 10
 
   grafana:
-    build:
-      context: ./grafana
-      dockerfile: Dockerfile-grafana
-    image: homate-grafana:1.0.0
+    image: pithings/rpi-grafana
+    container_name: "grafana"
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+      - /var/log/grafana:/var/log/grafana
     ports:
       - "3000:3000"
-    depends_on:
-      - influxdb
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 10
+    log_driver: "journald"
