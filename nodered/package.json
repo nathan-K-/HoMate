@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "node-red-contrib-influxdb": "^0.2.1"
+    "node-red-contrib-influxdb": "^0.2.1",
+	"node-red": "0.19.2",
+        "node-red-node-msgpack": "*",
+        "node-red-node-base64": "*",
+        "node-red-node-suncalc": "*",
+	"node-red-node-random": "*"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node $NODE_OPTIONS node_modules/node-red/red.js -v $FLOWS"
   },
   "author": "",
   "license": "ISC"
