@@ -45,12 +45,3 @@ services:
         delay: 10s
         max_attempts: 10
 
-  grafana:
-    image: pithings/rpi-grafana
-    container_name: "grafana"
-    volumes:
-      - /var/lib/grafana:/var/lib/grafana
-      - /var/log/grafana:/var/log/grafana
-    ports:
-      - "3000:3000"
-    log_driver: "journald"
