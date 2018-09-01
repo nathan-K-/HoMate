@@ -1,0 +1,7 @@
+FROM resin/rpi-raspbian:jessie
+
+RUN apt update && apt install -y mosquitto
+
+COPY mosquitto.conf /etc/mosquitto/mosquitto.conf
+
+CMD ["mosquitto"]

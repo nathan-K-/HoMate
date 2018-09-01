@@ -1,0 +1,17 @@
+FROM resin/rpi-raspbian:jessie
+
+RUN apt update && apt install -y apt-transport-https curl wget
+
+# RUN curl -sL https://bintray.com/user/downloadSubjectPublicKey?username=bintray | apt-key add -
+
+# RUN echo "deb https://dl.bintray.com/fg2it/deb-rpi-1b jessie main" | sudo tee /etc/apt/sources.list.d/grafana.list
+
+# RUN sudo bash -c "apt-get udpate && apt-get install -y grafana"
+
+RUN wget https://dl.bintray.com/fg2it/deb-rpi-1b/main/g/grafana_5.1.4_armhf.deb
+
+RUN dpkg -i grafana_5.1.4_armhf.deb || :
+
+RUN apt -f install
+
+CMD ["/usr/sbin/grafana-server","-config","/etc/grafana/grafana.ini","cfg:default.paths.logs=/var/log/grafana","cfg:default.paths.data=/var/lib/grafana"]

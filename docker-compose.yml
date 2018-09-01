@@ -1,0 +1,56 @@
+version: "3"
+services:
+
+  influxdb:
+    build:
+      context: ./influxdb
+      dockerfile: Dockerfile-influxdb
+    image: homate-influxdb:1.0.0
+    ports:
+      - "8086:8086"
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+
+  mosquitto:
+    build:
+      context: ./mosquitto
+      dockerfile: Dockerfile-mosquitto
+    image: homate-mosquitto:1.0.0
+    ports:
+      - "1883:1883"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+
+  nodered:
+    build:
+      context: ./nodered # for package.json file
+      dockerfile: Dockerfile-nodered
+    image: homate-nodered:1.0.0
+    ports:
+      - "1880:1880"
+    depends_on:
+      - influxdb
+      - mosquitto
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+
+  grafana:
+	https://github.com/thingspi/rpi-grafana/blob/master/Dockerfile
+    container_name: "grafana"
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+      - /var/log/grafana:/var/log/grafana
+    ports:
+      - "3000:3000"
+    log_driver: "journald"
